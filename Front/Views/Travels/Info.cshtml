@@ -1,0 +1,65 @@
+﻿@using System.Diagnostics.Eventing.Reader
+@model ViewModel.UserTravels
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "游记详情";
+
+}
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a>>> <a href="#">游记详情</a></div>
+    <div class="clumn_w clearfix">
+        <div class="clumn_r">
+            <div class="xl_tit">@Model.travels.title</div>
+            <div class="fgsdt">
+                <p class="fgp1">
+                    <span class="fgspan2">@Model.travels.title</span><br>
+                    发布时间：@Model.travels.CreateDateTime<br />
+                    发布者:@Model.user.NickName<br />
+                    
+                </p>
+                <p class="fgp2">
+                    @Model.travels.content
+                </p>
+                                @if (ViewBag.isclick == true)
+                {
+                    <button id="btn_tops" disabled="disabled">点赞</button><br />
+                }
+                else
+                {  
+                    <button id="btn_tops">点赞</button><br />
+                }
+
+                <label id="txt_tops">点赞数： @Model.travels.tops</label>
+            </div>
+        </div>
+    </div>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript" src="~/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            $("#btn_tops").click(function() {
+                $.ajax({
+                    url: "/Travels/click_tops/@Model.travels.Id",
+                    dataType: "json",
+                    type: "post",
+                    success: function(res) {
+                        if (res.status == "ok") {
+                            //alert(typeof( res.data));
+                            $("#txt_tops").html("点赞数：" + res.data);
+                            $("#btn_tops").attr('disabled', true);
+                        } else {
+                            alert("错误：" + res.errorMsg);
+                        }
+                    },
+                    error: function(res) {
+                        alert("报错");
+                    }
+                });
+            });
+        }
+    </script>
+}
+

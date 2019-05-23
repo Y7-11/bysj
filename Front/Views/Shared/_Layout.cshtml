@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/common.css" rel="stylesheet" type="text/css" />
+
+    <title>@ViewBag.Title</title>
+</head>
+
+
+<body>
+    <script src="~/js/jquery-1.9.1.min.js"></script>
+    <div class="top_hw clearfix">
+        <div class="top_h clearfix">
+            <div class="top_hl"><span>欢迎来到大学生旅游网，让你的旅游全程轻松、愉快！</span> 预定热线：<b>0571-63322269</b></div>
+            <div class="top_hr"><a href="~/Register/Index">会员注册</a> |
+            @if (ViewBag.phonenum!=null) {
+                  <a> @ViewBag.phonenum </a> 
+            }
+            else
+            {
+                <a href = "/Main/Login" > 登录 </a>
+            }
+             |  <a href="/Main/Center">个人中心</a></div>
+
+</div>
+
+</div>
+
+<div class="head_w">
+        <div class="head_t clearfix">
+            <div class="logo"><img src="~/images/logo1.jpg"></div>
+            <div class="rx_line"><img src="~/images/rx.jpg"></div>
+        </div>
+    </div>
+    <div class="mainNav clearfix">
+        <ul class="Nav_ul">
+            <li><a href="~/Main/Index">首页</a><img src="~/images/nav_line.jpg"></li>
+            <li><a href="~/Guide/Index">导游列表</a><img src="~/images/nav_line.jpg"></li>
+            <li><a href="/Lines/Index">旅游路线</a><img src="~/images/nav_line.jpg"></li>
+            <li><a href="/Travels/Index">旅游游记</a><img src="~/images/nav_line.jpg"></li>
+            <li><a href="~/TeamIntr/Index">关于我们</a><img src="~/images/nav_line.jpg"></li>
+            @*<li><a href="行程导航-详情.html">行程导航</a></li>*@
+        </ul>
+    </div>
+
+    @RenderBody()
+    <div class="friend_w clearfix">
+        <div class="friend clearfix">
+            <dl class="friend_dl bg01">
+                <dt><b>网站使用流程</b></dt>
+                <dd><a href="#">网站使用流程</a></dd>
+                <dd><a href="~/RegisterController/Index">会员注册流程</a></dd>
+            </dl>
+            <dl class="friend_dl bg02">
+                <dt><b>合作伙伴</b></dt>
+                <dd><a href="www.baidu.com">友情链接</a></dd>
+                <dd><a href="#">广告合作</a></dd>
+
+            </dl>
+            <dl class="friend_dl bg03">
+                <dt><b>会员中心</b></dt>
+                <dd><a href="~/Main/Login">会员登录</a></dd>
+                <dd><a href="#">帮助中心</a></dd>
+                <!--<dd><a href="#">积分中心</a></dd>
+                <dd><a href="#">支付中心</a></dd>-->
+            </dl>
+            <dl class="friend_dl bg04">
+                <dt><b>公司简介</b></dt>
+                <dd><a href="#">关于平台</a></dd>
+                <dd><a href="#">加入平台</a></dd>
+                <!--<dd><a href="#">公司动态</a></dd>
+                <dd><a href="#">网站地图</a></dd>-->
+            </dl>
+            <dl class="friend_dl bg05">
+                <dt><b>旅游查询</b></dt>
+                <dd><a href="http://www.weather.com.cn/weather/101210101.shtml">天气预报</a></dd>
+                <dd><a href="https://map.baidu.com/">路线查询</a></dd>
+                <!--<dd><a href="#">电子地图</a></dd>
+                <dd><a href="#">航班时刻</a></dd>-->
+            </dl>
+        </div>
+    </div>
+    <div class="footer_w">
+        <div class="footer clearfix">
+            <div class="footer_c">
+                <p>地址：中国浙江省金华职业技术学院</p>
+                <p>Copyright © 2018 大学生旅游资源共享平台 All Rights Reserved. 技术支持：<a href="#"></a></p>
+            </div>
+            <div class="f_logo"><img src="~/images/b_logo1.jpg"></div>
+        </div>
+    </div>
+
+    <script src="~/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.icheck.min.js"></script>
+    @RenderSection("FooterScript", false)
+</body>
+</html>

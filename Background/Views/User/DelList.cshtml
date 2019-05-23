@@ -1,0 +1,109 @@
+﻿@model DTO.UserDTO[]
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span class="c-gray en">&gt;</span> 会员列表 <a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="pd-20">
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="batch_recovery()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe66b;</i> 批量还原</a> </span> <span class="r">共有数据：<strong>@Model.Length</strong> 条</span> </div>
+    <form id="formList">
+        <table class="table table-border table-bordered table-bg">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="9">会员列表</th>
+                </tr>
+                <tr class="text-c">
+                    <th width="25"><input type="checkbox" name="" value=""></th>
+                    <th width="150">昵称</th>
+                    <th width="100">性别</th>
+                    <th width="150">手机号</th>
+                    <th width="150">邮箱</th>
+                    <th width="150">加入时间</th>
+                    <th width="150">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+            {
+                    <tr class="text-c">
+                        <td><input type="checkbox" value="@user.Id" name="selectedIds"></td>
+                        <td>@user.NickName</td>
+                        <td>@user.Gender</td>
+                        <td>@user.PhoneNum</td>
+                        <td>@user.Email</td>
+                        @*<td>@user.Address</td>*@
+                        <td>@user.CreateDateTime</td>
+                        <td class="td-manage">
+                            <a title="还原" href="javascript:;" onclick="user_recovery(this,@user.Id)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe66b;</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+
+        /*用户-编辑*/
+        function member_edit(title, url, id, w, h) {
+            layer_show(title, url, w, h);
+        }
+        function batch_recovery() {
+            layer.confirm("确认要批量还原这些数据吗？", function () {
+                var formData = $("#formList").serializeArray();
+                $.ajax({
+                    url: "/User/BatchRecovery",
+                    type: "post",
+                    data: formData,
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            location.reload();//刷新页面
+                        }
+                        else if (res.status == "redirect") {
+                            location.href = res.Data;
+                        }
+                        else if (res.status == "error") {
+                            alert(res.ErrorMsg);
+                        }
+                        else {
+                            alert("删除失败");
+                        }
+                    },
+                    error: function () {
+                        alert("网络请求失败");
+                    }
+                });
+            });
+        }
+
+        function user_recovery(obj, id) {
+            layer.confirm('确认要还原吗？', function (index) {
+                //此处请求后台程序，下方是成功后的前台处理……
+                $.ajax({
+                    url: "/User/Recovery/" + id,
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            $(obj).parents("tr").remove();
+                            layer.msg('已还原!', { icon: 1, time: 2000 });
+                        }
+                        else if (res.status == "redirect") {
+                            location.href = res.Data;
+                        }
+                        else if (res.status == "error") {
+                            alert(res.ErrorMsg);
+                        }
+                        else {
+                            layer.msg('还原失败!', { icon: 2, time: 2000 });
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+}

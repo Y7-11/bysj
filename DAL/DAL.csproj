@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{23F230B7-3AC5-451E-B4FD-DBEF3FD04690}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DAL</RootNamespace>
+    <AssemblyName>DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminUserRoleSvc.cs" />
+    <Compile Include="AdminUserService.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="CommentService.cs" />
+    <Compile Include="GuideService.cs" />
+    <Compile Include="GuideUserService.cs" />
+    <Compile Include="GuidLinesService.cs" />
+    <Compile Include="IService\IAdminUserRoleService.cs" />
+    <Compile Include="IService\IAdminUserService.cs" />
+    <Compile Include="IService\ICommentService.cs" />
+    <Compile Include="IService\IGuideService.cs" />
+    <Compile Include="IService\IGuideUserService.cs" />
+    <Compile Include="IService\IGuidLinesService.cs" />
+    <Compile Include="IService\ILineInfoService.cs" />
+    <Compile Include="IService\ILineService.cs" />
+    <Compile Include="IService\IOrderService.cs" />
+    <Compile Include="IService\IOrderUserService.cs" />
+    <Compile Include="IService\IPermissionService.cs" />
+    <Compile Include="IService\IRoleService.cs" />
+    <Compile Include="IService\IschoolService.cs" />
+    <Compile Include="IService\IServiceSupport.cs" />
+    <Compile Include="IService\ITravelService.cs" />
+    <Compile Include="IService\IUserRoleService.cs" />
+    <Compile Include="IService\IUserService.cs" />
+    <Compile Include="IService\IUserTravelsService.cs" />
+    <Compile Include="LineInfoService.cs" />
+    <Compile Include="LineService.cs" />
+    <Compile Include="OrderService.cs" />
+    <Compile Include="OrderUserService.cs" />
+    <Compile Include="PermissionService.cs" />
+    <Compile Include="RoleService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="schoolService.cs" />
+    <Compile Include="TravelsService.cs" />
+    <Compile Include="UserRoleService.cs" />
+    <Compile Include="UserService.cs" />
+    <Compile Include="UserTravelsService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{A32DD347-36EF-478E-BCB0-1008D8CCD017}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{18B63442-2270-4EC1-A9EE-FC7894557564}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EFEntity\EFEntity.csproj">
+      <Project>{F659FB94-714E-41BF-A296-485F94B899B5}</Project>
+      <Name>EFEntity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj">
+      <Project>{1A00A8C5-3086-4531-9DA7-47382F76840C}</Project>
+      <Name>ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

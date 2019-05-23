@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "登录";
+}
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a>  >> <a href="~/Main/Login">会员登录</a></div>
+    <div class="login_w clearfix">
+        <div class="login">
+            <div class="login_t">会员登录</div>
+            <div class="login_con">
+                <form id="formLogin">
+                    <table class="login_tab" width="270" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>登录名：</td>
+                            <td><input type="text" name="Account" value="" placeholder=""></td>
+                        </tr>
+                        <tr>
+                            <td>密&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+                            <td><input type="password" name="Password" value="" placeholder=""></td>
+                        </tr>
+              
+                        <tr>
+                            <td><img src="~/Main/CreateVerifyCode" id="imgVerifyCode"></td>
+                            <td><input class="input-text size-L" name="VerifyCode" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" ></td>                          
+               
+                        </tr>
+                                                       
+                        @*<tr>
+                            <td></td>
+                            <td><input type="checkbox" name="" value=""> 30天内自动登录</td>
+                        </tr>*@
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><button style="cursor:pointer" class="log_b" id="btnLogin">登 录</button> </td>
+
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            <div class="login_b">
+                <p>还不是大学生旅游的会员？  <a class="free_zc" href="~/Register/Index">免费注册</a> </p>             
+            </div>
+        </div>
+    </div>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $("#kanbuq,#imgVerifyCode").click(function () {
+                $("#imgVerifyCode").attr("src", "/Main/CreateVerifyCode?" + Math.random());
+            });
+            $("#imgVerifyCode").click();//为了避免页面刚打开的时候加载缓存中"/Main/CreateVerifyCode"
+            //因此要主动点击一下，刷新验证码
+            $("#btnLogin").click(function () {
+                var formData = $("#formLogin").serializeArray();
+                $.ajax({
+                    url: "/Main/Login",
+                    dataType: "json",
+                    type: "post",
+                    data: formData,
+                    success: function(res) {
+                        if (res.status == "ok") {
+                            //alert("登录成功");
+                            location.href = "/Main/Index";
+                        } else {
+                            alert("错误：" + res.errorMsg);
+                            $("#imgVerifyCode").click();
+                        }
+                    },
+                    error: function(res) {
+                        alert("报错");
+                    }
+                });
+            });
+        });
+    </script>
+
+}

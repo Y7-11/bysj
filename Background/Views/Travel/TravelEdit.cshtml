@@ -1,0 +1,97 @@
+﻿@model DTO.TravelsDTO
+@{
+    ViewBag.Title = "游记添加";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="pd-20">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add">
+        <input type="hidden" name="id" id="id" value="@Model.Id" />
+        <div class="row cl">
+            <label class="form-label col-3"><span class="c-red">*</span>标题：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" name="title" value="@Model.title" placeholder="" id="member-name" name="Province" datatype="*2-16" nullmsg="账号不能为空">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-3">内容：</label>
+            <div class="formControls col-5">
+                <textarea cols="" rows="" class="textarea" name="context" datatype="*0-100" dragonfly="true" nullmsg="内容不能为空！" onkeyup="textarealength(this, 100)">@Model.content</textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-3"><span class="c-red">*</span>点赞数：</label>
+            <div class="formControls col-5">
+                <input type="text" class="input-text" value="@Model.tops" name="tops" placeholder="" id="member-name" name="city" datatype="*2-16" nullmsg="昵称不能为空">
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-3"><span class="c-red">*</span>用户：</label>
+            <div class="formControls col-5">
+                <select name="Uid">
+                    <option value="@Model.Id">@Model.UNickName</option>
+
+                </select>
+            </div>
+            <div class="col-4"> </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-9 col-offset-3">
+                <input id="btnSave" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            $("#form-member-add").Validform({
+                tiptype: 2,
+                callback: function (form) {
+                    form[0].submit();
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.$('.btn-refresh').click();
+                    parent.layer.close(index);
+                }
+            });
+
+            $("#btnSave").click(saveAjax);
+        });
+
+        var saveAjax = function () {
+            var formData = $("#form-member-add").serializeArray();
+            $.ajax({
+                url: "/Travel/TravelEdit",
+                type: "post",
+                data: formData,
+                dataType: "json",
+                success: function (res) {
+                    if (res.status == "ok") {
+                        parent.location.reload();
+                    }
+                    else {
+                        alert("error");
+                    }
+                },
+                error: function () { alert("出错"); }
+            });
+        };
+
+
+
+    </script>
+}

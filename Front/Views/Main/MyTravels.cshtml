@@ -1,0 +1,64 @@
+﻿@model DTO.TravelsDTO[]
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "我的游记";
+}
+<style type="text/css">
+    #table td {
+        width: 40px;
+        height: 19px;
+        background-color: #F3F3F3;
+        border: 1px solid #D0D0D0;
+        color: #BBBBBB;
+        line-height: 9px;
+    }
+</style>
+<div class="js_wrap claerdix">
+    <div class="clearfix tab_d">
+        <form id="formList">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {   <input type="checkbox" name="dels" value="@item.Id">
+                    <div class="js_con clearfix">
+                     
+                        <div class="js_c">
+                            <p><b>  <a href="~/Travels/info/@item.Id"> @item.title </a></b></p>
+                            <p><a class="js_pl" href="#">有 @item.tops 个赞</a></p>
+                        </div>
+
+                    </div>
+                }
+            }
+            <div class="clearfix tab_d">
+                <input type="button" id="btnLogin" value="删除"/>
+            </div>
+        </form>
+    </div>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+        $("#btnLogin").click(function () {
+            var formData = $("#formList").serializeArray();
+            $.ajax({
+                url: "/Travels/BatchDeleteTravel",
+                dataType: "json",
+                type: "post",
+                data: formData,
+                success: function (res) {
+                    if (res.status == "ok") {
+                        //alert("登录成功");
+                        location.href = "/Main/MyTravels";
+                    } else {
+                        alert("错误：" + res.errorMsg);
+                    }
+                },
+                error: function (res) {
+                    alert("报错");
+                }
+            });
+        });
+    </script>
+}
+

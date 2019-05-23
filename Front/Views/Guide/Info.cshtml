@@ -1,0 +1,70 @@
+﻿@model ViewModel.GuidInfoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "导游详情";
+}
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Guide/Info/@Model.guide.Id">导游详情</a> >> <a href="#">@ViewBag.nickname</a></div>
+    <div class="clumn_w clearfix">
+        <div class="clumn_r">
+            @*<div class="cr_tit"><b>餐 饮</b> <span><a href="餐饮住宿 -预定.html">餐饮预定</a></span></div>*@
+            <div class="cr_wrap">
+                <div class="cr_t">
+                    <div class="ct">@ViewBag.nickname</div>
+                </div>
+                <div class="cr_con">
+                    <div style="float:left;width:150px"><img src="@Model.guide.picture" width="120" height="100"></div>
+                    <div class="intro">
+                        <input type="hidden" id="Guide_Id" value="@Model.guide.Id" />
+                        <span>星级：<image src="~/images/p_tar0@(Model.guide.level).jpg"></image></span> <br />
+                        <span>学校：@Model.guide.school</span>  <br />
+                        @*<span>地址：@Model.Address</span>  <br />*@
+                        @*<span>是否可约：@(!Model.guide.isappointment)</span><br />*@
+                        <span>咨询电话：@ViewBag.phonenum</span><br />
+                        <p><b>导游简介：</b></p>
+                        <p style="text-indent:2em;">@Model.guide.intro</p>
+                        @*<input type="button" id="btn_yuyue" value="预约" style="width:100px;height:50px;">*@
+                    </div>
+                    <div>
+                        <div class="js_c">
+                            @foreach (var lines in Model.lines)
+                            { 
+                                <p><b> <a href="~/Lines/info/@lines.Id"> @lines.intro </a></b></p>
+                            }
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+        $(function () {
+
+            $("#btn_yuyue").click(function () {
+                var id = $("#Guide_Id").val();
+                $.ajax({
+                    url: "/Guide/Btn_Yuyue",
+                    dataType: "json",
+                    type: "post",
+                    data: { "Id": id },
+                    success: function (res) {
+                        if (res.status == "success") {
+                            alert(res.data);
+                            location.href = "/Guide/Btn_Yuyue/" + id;
+                        }
+                        else {
+                            alert(res.errorMsg);
+                        }
+                    },
+                    error: function (res) {
+                        alert("网络错误");
+                    }
+                })
+            });
+        });
+    </script>
+}

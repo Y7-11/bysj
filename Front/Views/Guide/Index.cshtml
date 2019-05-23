@@ -1,0 +1,163 @@
+﻿@model DTO.GuideDTO[]
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "导游列表";
+}
+<style type="text/css">
+    .pagination > li > a,
+    .pagination > li > span {
+        color: #999;
+        cursor: pointer;
+        background: #ffffff;
+        background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 51%, #e1e1e1 51%, #f6f6f6 100%);
+        background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 51%,#e1e1e1 51%,#f6f6f6 100%);
+        background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 51%,#e1e1e1 51%,#f6f6f6 100%);
+        border: 1px solid #ddd;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+    }
+
+        .pagination > li > a:focus,
+        .pagination > li > a:hover,
+        .pagination > li > span:focus,
+        .pagination > li > span:hover {
+            color: #fff;
+            background: #f3c5bd !important;
+            background: -moz-linear-gradient(top, #f3c5bd 0%, #e86c57 51%, #ea2803 51%, #ff0000 75%, #c72200 100%) !important;
+            background: -webkit-linear-gradient(top, #f3c5bd 0%,#e86c57 51%,#ea2803 51%,#ff0000 75%,#c72200 100%) !important;
+            background: linear-gradient(to bottom, #f3c5bd 0%,#e86c57 51%,#ea2803 51%,#ff0000 75%,#c72200 100%) !important;
+            border-color: #ddd;
+        }
+
+    li {
+        float: left
+    }
+</style>
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Guide/Index">导游列表</a> </div>
+    <form action="~/Guide/Index" method="post">
+        <div class="clumn_w clearfix">
+            <div class="searchform" style="">
+                <input type="text" class="ttl" name="search" style="height:30px;width:807px;margin-bottom:5px;" placeholder="请输入搜索内容" />
+                <input type="submit" value="搜索" id="searchbtn" style="height:35px;width:80px" />
+                <input type="button" value="取消" id="cancel" style="height:35px;width:80px" />
+            </div>
+            <div class="clumn_r">
+                <div class="tab_menu b_border clearfix">
+                    <ul class="m_ul">
+                        <li class="selected">导游</li>
+                        @*<li>酒店</li>*@
+                    </ul>
+                    @*<a href="#">导游预定</a>*@
+                </div>
+                <div class="tab_box">
+                    <div class="tab_ul">
+                        @foreach (var guide in Model)
+                    {
+                            <div class="clearfix tab_d">
+                                <div class="fn-left"><img src="@guide.picture" width="100px;" height="150px;"></div>
+                                <div class="tab_con">
+                                    <p><b>@guide.nickname</b></p>
+                                    <p>学校：@guide.school</p>
+                                    <p>推荐星级：<image src="~/images/p_tar0@(guide.level).jpg"></image></p>
+                                    <p>联系方式：@ViewBag.phonenum</p>
+                                    <p>简介：@guide.intro</p>
+                                    <p><a href="/Guide/info/@guide.Id"><img src="~/images/more)).jpg"></a></p>
+                                </div>
+                            </div>
+                    }
+                        <div class="clearfix tab_d">
+                            <ul class="pagination">
+                                <li><a href="~/Guide/Index/1">首页</a></li>
+                                @for (int i = 1; i <= (int)ViewData["totalpage"]; i++)
+                            {
+                                    <li><a href="~/Guide/Index?page=@i">@i</a></li>
+                            }
+
+                                <li><a href="~/Guide/Index?page=@ViewData["totalpage"]">末页</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section FooterScript
+{
+    <script type="text/javascript" src="~/js/imgtoggle.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+
+
+            var iTgl = new k_iToggle();
+            iTgl.init({
+                boxId: 'box',
+                numId: 'num',
+                imgId: 'imgs',
+                isAuto: true,
+                aCls: 'act',
+                iCls: 'imgs1',
+                direct: 'crt'
+            });
+            chg(iTgl, 'chg');
+            _auto(iTgl, 'auto_1');
+
+            //改变方向
+            function chg(o, id) {
+                $('#' + id).click(function () {
+                    if (o.direct() == 'crt') {
+                        o.direct('lvl');
+                        $(this).text('纵向');
+                    } else {
+                        o.direct('crt');
+                        $(this).text('横向');
+                    }
+                });
+            }
+
+            function _auto(o, id) {
+                $('#' + id).click(function () {
+                    if (o.isAuto) {
+                        o.isAuto = false;
+                        $(this).text('自动播放已停止');
+                    } else {
+                        o.isAuto = true;
+                        o.auto();
+                        $(this).text('自动播放');
+                    }
+                });
+            }
+        }
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+            var wweya_li = $("div.tab_menu ul li");
+            wweya_li.click(function () {
+                $(this).addClass("selected")
+                    .siblings().removeClass("selected");
+                var index = wweya_li.index(this);
+                $("div.tab_box > div")
+                    .eq(index).show(100)
+                    .siblings().hide();
+            }).hover(function () {
+                $(this).addClass("hover");
+            }, function () {
+                $(this).removeClass("hover");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+                $(function () {
+                    $("#cancel").click(function () {
+                        location.href = "/Guide/Index";
+                    });
+                });
+    </script>
+
+
+}

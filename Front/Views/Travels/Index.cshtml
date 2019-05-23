@@ -1,0 +1,93 @@
+﻿@model DTO.TravelsDTO[]
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "旅游游记";
+
+}
+<style type="text/css">
+    .mf_box {
+        background: #fff;
+        width: 1200px;
+        margin: auto;
+    }
+
+    .pagination > li > a,
+    .pagination > li > span {
+        color: #999;
+        cursor: pointer;
+        background: #ffffff;
+        background: -moz-linear-gradient(top, #ffffff 0%, #f1f1f1 51%, #e1e1e1 51%, #f6f6f6 100%);
+        background: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 51%,#e1e1e1 51%,#f6f6f6 100%);
+        background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 51%,#e1e1e1 51%,#f6f6f6 100%);
+        border: 1px solid #ddd;
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+    }
+
+        .pagination > li > a:focus,
+        .pagination > li > a:hover,
+        .pagination > li > span:focus,
+        .pagination > li > span:hover {
+            color: #fff;
+            background: #f3c5bd !important;
+            background: -moz-linear-gradient(top, #f3c5bd 0%, #e86c57 51%, #ea2803 51%, #ff0000 75%, #c72200 100%) !important;
+            background: -webkit-linear-gradient(top, #f3c5bd 0%,#e86c57 51%,#ea2803 51%,#ff0000 75%,#c72200 100%) !important;
+            background: linear-gradient(to bottom, #f3c5bd 0%,#e86c57 51%,#ea2803 51%,#ff0000 75%,#c72200 100%) !important;
+            border-color: #ddd;
+        }
+
+    li {
+        float: left
+    }
+    </style>
+<form action="~/Travels/Index" method="post">
+    <div class="mf_box">
+        
+        <div class="js_wrap claerdix">
+            <div class="searchform">
+                <input type="text" class="ttl" name="search" style="height:30px;width:900px;margin-left:7px;" placeholder="请输入搜索内容" />
+                <input type="submit" value="搜索" id="searchbtn" style="height:35px;width:80px" />
+                <input type="button" value="取消" id="cancel" style="height:35px;width:80px" />
+                <input type="button" value="添加游记" id="Add" style="height:35px;width:80px" />
+            </div>
+            @foreach (var item in Model)
+            {
+                <div class="js_con clearfix">
+
+                    <div class="js_c">
+                        <p><b>  <a href="~/Travels/info/@item.Id"> @item.title </a></b></p>
+                        <p><a class="js_pl" href="#">有 @item.tops 个赞</a></p>
+                    </div>
+                </div>
+                }
+            <div class="clearfix tab_d">
+                <ul class="pagination">
+                    <li><a href="~/Lines/Index/1">首页</a></li>
+                    @for (int i = 1; i <= (int)ViewData["totalpage"]; i++)
+                    {
+                        <li><a href="~/Travels/Index?page=@i">@i</a></li>
+                    }
+
+                    <li><a href="~/Travels/Index?page=@ViewData["totalpage"]">末页</a></li>
+                </ul>
+            </div>
+
+</form>
+
+
+@section FooterScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#cancel").click(function () {
+                location.href = "/Travels/Index";
+            });
+            $("#Add").click(function () {
+                location.href = "/Travels/AddTravels";
+            });
+        });
+    </script>
+
+}
+

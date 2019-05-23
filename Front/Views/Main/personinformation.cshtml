@@ -1,0 +1,208 @@
+﻿@model ViewModel.personViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "注册";
+}
+<style type="text/css">
+    .red {
+        color: red;
+    }
+</style>
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a>  >> <a href="~/Main/personinformation">个人资料</a></div>
+    <div class="regin_w clearfix">
+        <div class="regin_con">
+            <div class="regin">
+                @*<div class="tab_menu regin_menu">
+                        <ul class="regin_ul">
+                            <li class="selected">注册</li>
+                        </ul>
+                    </div>*@
+                <div class="tab_box">
+                    <div class="regin_tw">
+                        <form class="form form-horizontal" id="formLogin">
+                            <table width="650" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="62"><span class="red">*</span>账号：</td>
+                                    <td width="588">
+                                        <input class="rg_in" type="text" name="" id="txtUserName" value="@Model.account" disabled="disabled" placeholder="长度限制为6-20位" datatype="*2-16" nullmsg="账号不能为空">
+                                        <span id="usernameErr" class="red"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="62"><span class="red">*</span>昵称：</td>
+                                    <td width="588">
+                                        <input class="rg_in" type="text" name="nickname" id="txtNickName" value="@Model.nickname" placeholder="长度限制为10位" datatype="*2-16" nullmsg="昵称不能为空">
+                                        <span id="nicknameErr" class="red"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="62">性别：</td>
+                                    <td width="588">
+                                        <input type="radio" id="sex-1" checked="checked" value="男" name="gender" datatype="*" nullmsg="请选择性别！" />
+                                        <label for="sex-1">男</label>
+                                        <input type="radio" id="sex-2" value="女" name="gender" />
+                                        <label for="sex-2">女</label>
+                                        <input type="radio" id="sex-3" value="保密" name="gender">
+                                        <label for="sex-3">保密</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="red">*</span>登录密码：</td>
+                                    <td>
+                                        <input class="rg_in" type="password" name="password" id="txtPassWord" value="" placeholder="留空则为不修改密码" datatype="*6-10" nullmsg="密码不能为空">
+                                        <span id="password1Err" class="red"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span class="red">*</span>确认密码：</td>
+                                    <td>
+                                        <input class="rg_in" type="password" name="password2" id="txtMatchPassWord" placeholder="留空则为不修改密码" value="" datatype="*6-10" recheck="password" nullmsg="确认密码不能为空">
+                                        <span id="password2Err" class="red"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="70"><span class="red">*</span>手机号码：</td>
+                                    <td width="588">
+                                        <input class="rg_in" type="text" name="phonenum" id="txtPhone" value="@Model.phonenum" placeholder="" datatype="*2-16" nullmsg="手机号不能为空">
+                                        <span id="phonenumErr" class="red"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="62">邮箱：</td>
+                                    <td width="588"><input class="rg_in" type="text" name="email" id="txtEmail" value="@Model.email" placeholder="" datatype="e" nullmsg="请输入邮箱！"></td>
+                                </tr>
+
+                                @if (@ViewBag.guideid != null)
+                                {
+                                    <tr>
+                                        <td width="62"><span class="red">*</span>学校：</td>
+                                        <td width="588">                                       
+                                            <select name="schoolname">
+                                                @foreach (var item in Model.allschool)
+                                                {
+                                                    if (item.schoolname == Model.school)
+                                                    {
+                                                        <option selected="selected">@item.schoolname</option>
+                                                    }
+                                                    <option>@item.schoolname</option>
+                                                }
+
+                                            </select>
+                                            <span id="nicknameErr" class="red"></span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td width="62"><span class="red">*</span>简介：</td>
+                                        <td><textarea style="margin: 0px; width: 364px; height: 191px;" name="intro" cols="" rows="" class="textarea" datatype="*0-100" dragonfly="true" nullmsg="简介不能为空！" onkeyup="textarealength(this, 100)">@Model.intro</textarea></td>
+  
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><a href="#" id="btnSubmit"><img src="~/images/fbtn2.png"></a></td>
+                                </tr>
+                            </table>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterScript
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $('.skin-minimal input').iCheck({
+                checkboxClass: 'icheckbox-blue',
+                radioClass: 'iradio-blue',
+                increaseArea: '20%'
+            });
+
+            //保存按钮点击之后触发js事件
+            $("#btnSubmit").on("click",
+                function() {
+                    if (checkFrom() != false) {
+                        var obj = checkFrom(); //进行表单验证
+                        var objJson = JSON.stringify(obj); //将对象序列化成json字符串
+                        if (!objJson) {
+                            return false;
+                        }
+                        //利用ajax发送请求到后台
+                        var formData = $("#formLogin").serializeArray();
+                        $.ajax({
+                            url: "/Main/EditPersonal",
+                            dataType: "json",
+                            type: "post",
+                            data: formData, //方法所需的参数
+                            success: function(res) { //后台方法成功运行之后触发的回调事件，会返回一个data,就是后台方法中的return
+                                if (res.status == "ok") {                         
+                                    location.href = "/Main/Center";
+                                    alert("保存成功");
+                                } else {
+                                    alert("错误：" + res.errorMsg);
+                                }
+
+                            }
+                        });
+                    }
+
+                });
+
+            function checkFrom() {
+                //用jQuery获取表单元素,进行表单验证
+                var username = $("#txtUserName");//获取id为txtUserName的元素
+                var password = $("#txtPassWord");
+                var matchPassWord = $("#txtMatchPassWord");
+                var phone = $("#txtPhone");
+                var sexCheck = $('input[name="gender"]:checked ');//获取name为gender的被选中的元素
+                var nickname = $("#txtNickName");
+                var check = $(":checkbox")[0];
+                var email = $("#txtEmail");
+
+                if (username.val().length == 0 || username.val().length > 20 || username.val().length < 6) {
+                    $("#usernameErr").html("用户名长度不符合要求！");
+                    return false;
+                }
+                else {
+                    $("#usernameErr").html("")
+                }
+                if (password.val().length > 20) {
+                    $("#password1Err").html("密码长度不符合要求！");
+                    return false;
+                } else if (password.val() != matchPassWord.val()) {
+                    $("#password2Err").html("两次密码不一样！");
+                    return false;
+                } else {
+                    $("#password1Err").html("");
+                    $("#password2Err").html("");
+                }
+                if (nickname.val().length == 0 || nickname.val().length > 10) {
+                    $("#nicknameErr").html("昵称长度不符合要求！");
+                    return false;
+                }
+                else {
+                    $("#nicknameErr").html("")
+                }
+                if (!(/^[1][3,4,5,7,8][0-9]{9}$/.test(phone.val()))) {
+                    $("#phonenumErr").html("不是完整的11位手机号或者正确的手机号前七位！");
+                    // alert("不是完整的11位手机号或者正确的手机号前七位");
+                    return false;
+                }
+                else {
+                    $("#phonenumErr").html("");
+                }
+                //如果验证通过 则返回一个对象，验证码跟邮箱的格式验证在后台进行验证
+               // var model = { Account: username.val(), PhoneNum: phone.val(), NickName: nickname.val(), Gender: sexCheck.val(), Password: password.val(), Email: email.val() };
+                return true;
+
+            }
+        });
+    </script>
+}

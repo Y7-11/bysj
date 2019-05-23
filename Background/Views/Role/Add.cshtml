@@ -1,0 +1,61 @@
+﻿@model DTO.PermissionDTO[]
+@{
+    ViewBag.Title = "新增角色";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form id="formAdd">
+    <div class="row">
+        <input type="hidden" name="age" value="3" />
+        <div class="formControls col-3">
+            名称：<input type="text" name="name" id="name" datatype="*1-50" nullmsg="角色名称不能为空" />
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row cl">
+        @foreach (var perm in Model)
+        {
+            <div class="col-xs-12 col-sm-3">
+                <input type="checkbox" id="PermissionIds_@perm.Id" name="PermissionIds" value="@perm.Id" />
+                <label for="PermissionIds_@perm.Id">@perm.Description</label>
+            </div>
+        }
+    </div>
+    <input type="button" value="保存" id="btnSave" />
+</form>
+
+@section FooterScript
+{
+    <script type="text/javascript">
+        var saveAjax = function () {
+            var formData = $("#formAdd").serializeArray();
+            $.ajax({
+                url: "/Role/Add",
+                type: "post",
+                data: formData,
+                dataType: "json",
+                success: function (res) {
+                    if (res.status == "ok") {
+                        parent.location.reload();
+                    }
+                    else {
+                        alert("error");
+                    }
+                },
+                error: function () { alert("出错"); }
+            });
+        };
+
+        $(function () {
+            var validForm = $("#formAdd").Validform({ tiptype: 2 }); //初始化校验页面加载完成后
+            $("#btnSave").click(function () {
+                if (validForm.check(false)) {
+                    saveAjax();
+                }
+            });
+
+        })
+
+    </script>
+}
+

@@ -1,0 +1,112 @@
+﻿@model DTO.LinesInfoDTO[]
+@{
+    ViewBag.Title = "InfoList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Main/Center">会员中心</a> >> <a href="~/Main/MyLines">预定与路线</a> >> <a href="#">添加路线详情</a></div>
+
+    <div class="fmember">
+        <form action="" method="post" id="form_addline">
+            <div class="fmr1">
+                <div class="fmr1_top">添加路线</div>
+                <div class="fmr1_m">
+                    <div class="forder" style="text-align:center;">
+                        <table style="margin:auto;">
+                            <tr style="height:60px;width:800px;font-size:20px"><td style="color:red;">路线地点：</td><td><input type="text" class="ipt" name="Address" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td style="color:red;">标题：</td><td><input type="text" class="ipt" name="ScenicSpot" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td style="color:red;">内容：</td><td><textarea type="text" class="ipt" name="SpotInfo" style="width:248px;height:100px;"  ></textarea></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td @*style="color:red;"*@>酒店房型：</td><td><input type="text" class="ipt" name="Apartment" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td @*style="color:red;"*@>酒店等级：</td><td><input type="text" class="ipt" name="Level" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td @*style="color:red;"*@>基本设施：</td><td><input type="text" class="ipt" name="Facilities" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td @*style="color:red;"*@>注意事项：</td><td><input type="text" class="ipt" name="attention" /></td></tr>
+                            <tr style="height:60px;width:800px;font-size:20px"><td style="color:red;">所占天数：</td><td><input type="text" class="ipt" name="tag" /></td></tr>
+                            @*<tr style="height:60px;width:800px;font-size:20px"><td><input type="button" value="提交" style="height:35px;width:100px;" /></td></tr>*@
+                        </table>
+
+                        <input id="addbtn" type="button" value="提交" style="height:35px;width:100px;margin:auto;margin-bottom:15px;" />
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="fmember">
+            <div class="fmr1">
+                <div class="fmr1_top">路线详情</div>
+                <div class="fmr1_m">
+                    <div class="forder" style="text-align:center;">
+                        <table style="margin:auto;width:800px;">
+                            <thead>
+                                <tr>
+                                    <th style="border:1px solid #000000;text-align:center;font-size:20px;">路线地点</th>
+                                    <th style="border:1px solid #000000;text-align:center;font-size:20px;">景点标题</th>
+                                    <th style="border:1px solid #000000;text-align:center;font-size:20px;">景点内容</th>
+                                    <th style="border:1px solid #000000;text-align:center;font-size:20px;">时间（天）</th>
+                                    @*<th style="border:1px solid #000000;text-align:center;font-size:20px;">操作</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item   in Model)
+                                {
+                                    <tr>
+                                        <td style="border:1px solid #000000;text-align:center;font-size:20px;">@item.Address</td>
+                                        <td style="border:1px solid #000000;text-align:center;font-size:20px;">@item.ScenicSpot</td>
+                                        <td style="border:1px solid #000000;text-align:center;font-size:20px;">@item.SpotInfo</td>
+                                        <td style="border:1px solid #000000;text-align:center;font-size:20px;">@item.tag</td>
+                                    </tr>
+                                }
+                            </tbody>
+
+
+
+                        </table>
+                        <input id="tcbtn" type="button" value="退出" style="height:35px;width:100px;margin:auto;margin-top:15px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+
+@section FooterScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#addbtn").click(function () {
+
+                var formData = $("#form_addline").serializeArray();
+                var addurl = "/Lines/InfoList?lid=" + '@ViewBag.lid';
+                $.ajax({
+                    url: addurl,
+                    type: "post",
+                    data: formData,
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            alert("ok");
+                            location.href = "/Lines/InfoList?lid="+'@ViewBag.lid';
+                        }
+                        else {
+                            alert("不可为空！");
+                        }
+                    },
+                    error: function () { alert("出错"); }
+                });
+            });
+
+            $("#tcbtn").click(function () {
+                location.href = "/Main/Index";
+            });
+
+        });
+
+    </script>
+
+
+}

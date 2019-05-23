@@ -1,0 +1,112 @@
+﻿@model ViewModel.LinesAndTime
+@ViewBag.Time
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "首页";
+
+}
+<div class="banner"><center><img src="~/images/banner01.jpg"></center></div>
+<div class="b_wrap page_w">
+    <div class="today_wrap clearfix">
+        <div class="today_info">今天是 @Model.Now.Year 年 @Model.Now.Month 月 @Model.Now.Day 日　@Model.Now.DayOfWeek </div>
+    </div>
+    <div class="add_01"><center><img src="~/images/add00.jpg"></center></div>
+    <div class="clumn_w clearfix">
+        <div class="clumn_cl">
+            <div class="mf_box">
+                <div class="mf_tit clearfix">
+                    <span>路线</span>
+                </div>
+                <div class="js_wrap claerdix">
+                    @foreach (var item in Model.Lines)
+                    {
+                        <div class="js_con clearfix">
+                            <div class="js_l">
+                                <a href="~/Lines/Info/@item.Id">
+                                    <img src="~/images/l_img01.jpg">
+                                </a>
+                            </div>
+                            <div class="js_c">
+                                <p><b>  <a href="~/Lines/info/@item.Id"> @item.title </a></b></p>
+                                <p>@item.intro</p>
+                                <p><a class="js_gm" href="#"><span>@item.NumOfPeople</span>预约</a></p>
+                            </div>
+                            <div class="js_r">
+                                <p><span class="fn_o">￥</span><b>@item.NowPrice</b>起</p>
+                                <p class="y_price">￥@item.PastPrice <span>@item.discount 折</span></p>
+                            </div>
+                        </div>
+                    }
+                                                                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterScript
+{
+<script type="text/javascript" src="~/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="~/js/imgtoggle.js"></script>
+<script type="text/javascript">
+window.onload=function(){
+    var iTgl=new k_iToggle();
+        iTgl.init({
+            boxId:'box',
+            numId:'num',
+            imgId:'imgs',
+            isAuto:true,
+            aCls:'act',
+            iCls:'imgs1',
+            direct:'crt'
+        });
+        chg(iTgl,'chg');
+        _auto(iTgl,'auto_1');
+
+    //改变方向
+    function chg(o,id){
+        $('#'+id).click(function(){
+            if(o.direct()=='crt'){
+                o.direct('lvl');
+                $(this).text('纵向');
+            }else{
+                o.direct('crt');
+                $(this).text('横向');
+            }
+        });
+    }
+
+    function _auto(o,id){
+        $('#'+id).click(function(){
+            if(o.isAuto){
+                o.isAuto=false;
+                $(this).text('自动播放已停止');
+            }else{
+                o.isAuto=true;
+                o.auto();
+                $(this).text('自动播放');
+            }
+        });
+    }
+}
+</script>
+<script type="text/javascript">
+
+    $(function(){
+        var wweya_li =$("div.tab_menu ul li");
+        wweya_li.click(function(){
+        $(this).addClass("selected")
+         .siblings().removeClass("selected");
+            var index =  wweya_li.index(this);
+        $("div.tab_box > div")
+        .eq(index).show(100)
+            .siblings().hide();
+                }).hover(function(){
+            $(this).addClass("hover");
+        },function(){
+            $(this).removeClass("hover");
+        });
+    });
+</script>
+
+}

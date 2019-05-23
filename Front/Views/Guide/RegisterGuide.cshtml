@@ -1,0 +1,110 @@
+﻿@model DTO.schoolDTO[]
+@{
+                /**/
+
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.Title = "成为导游";
+}
+
+<style type="text/css">
+    .red {
+        color: red;
+    }
+</style>
+
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="中国梦想游首页.html">首页</a>  >> <a href="会员注册.html">会员注册</a></div>
+    <div class="regin_w clearfix">
+        <div class="regin_con">
+            <div class="regin">
+                <div class="tab_menu regin_menu">
+                    <ul class="regin_ul">
+                        <li class="selected">成为导游</li>
+                    </ul>
+                </div>
+                <div class="tab_box">
+                    <div class="regin_tw">
+                        <form class="form form-horizontal" action="~/Guide/ToBeGuide" method="post" id="formLogin" enctype="multipart/form-data">
+                            <table border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="62"><span class="red">*</span>学校：</td>
+                                    <td width="588">
+                                        <select name="schoolname">
+                                            @foreach (var item in Model)
+                                            {
+                                                <option>@item.schoolname</option>
+                                            }
+                                         
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="80"><span class="red">*</span>学号：</td>
+                                    <td width="588"><input class="rg_in" type="text" id="txtIntro" name="schoolnum" value="" datatype="*2-16" nullmsg="简介不能为空" /></td>
+                                </tr>
+                                <tr>
+                                    <td width="62"><span class="red">*</span>简介：</td>
+                                    <td>
+                                        <input style="width:340px;height:200px;" type="text" id="txtIntro" name="intro" value="" datatype="*2-16" nullmsg="简介不能为空"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="62"><span class="red">*</span>照片：</td>
+                                    <td width="588">
+                                        <input type="file" name="upfile" id="myFile" />
+                                 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><input type="submit" id="submit" value="注册" /></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                    <div class="hide regin_tw">dhgjfd</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //$("#btnSubmit").on("click", function () {
+    //    if (checkFrom()) {
+    //        $.ajax({
+    //            url: "/Guide/ToBeGuide",
+    //            data: { file: $("#myFile").val(), school: $("#txtSchool").val(), intro: $("#txtIntro").val() },
+    //            type: "Post",
+    //            success: function (data) {
+    //                if (data.indexOf("注册成功") > -1) {
+    //                    alert("成功！");
+    //                    location.href = "/Main/Center";
+    //                }
+    //                else {
+    //                    alert("失败！");
+    //                }
+    //            }
+    //        })
+    //    }
+
+    //})
+
+    function checkFrom() {
+        //用jQuery获取表单元素,进行表单验证
+        var school = $("#txtSchool");//获取id为txtUserName的元素
+        var intro = $("#txtIntro");
+        var file = $("#myFile");
+        if (intro.val().length == 0 || intro.val().length > 500) {
+            alert("简介长度不符合要求！");
+            return false;
+        }
+        if (file.val().length == 0) {
+            alert("请选择文件！");
+            return false;
+        }
+
+        return true;
+
+    }
+</script>

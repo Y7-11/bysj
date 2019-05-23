@@ -1,0 +1,148 @@
+﻿@model Front.Models.UserOrderInfo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "个人中心";
+}
+<style type="text/css">
+    #table td {
+        width: 40px;
+        height: 19px;
+        background-color: #F3F3F3;
+        border: 1px solid #D0D0D0;
+        color: #BBBBBB;
+        line-height: 9px;
+    }
+</style>
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Main/Center">会员中心</a></div>
+    <div class="fmember">
+        <div class="fmleft">
+            <div class="fmleft_top"><img src="~/images/fmbt1.png" border="0"></div>
+            <div class="fmlist">
+                <ul>
+                    <li class="f1">订单中心</li>
+                    <li> >><a href="/Main/MyOrder?userid=@(ViewBag.userid)">我的订单</a> </li>   
+                    <li> >><a href="/Main/MyLines?userid=@(ViewBag.userid)">路线与预定</a> </li> 
+                    <li> >><a href="~/Main/personinformation">个人资料</a> </li>
+                    <li> >><a href="~/Main/MyTravels">我发表的游记</a> </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="fmright">
+            <div class="fmr1">
+                <div class="fmr1_top">会员中心</div>
+                <div class="fmr1_m">
+                    <div class="fgr">
+                        <div class="fgr_tx">
+                            <div class="fgr_tx1"><img src="~/images/ftx.png"></div>
+                            <div class="fgr_tx2"><a href="~/Main/personinformation">编辑个人资料</a></div>
+                        </div>
+                        <div class="fgr_zl">
+                            <p class="fp2">@Model.user.NickName，<span class="fspan1">您好！</span></p>
+                            <input id="level" value="@Model.user.Level" hidden />
+                            <div class="fp1">
+                                安全级别：
+                                <table id="table" border="0" cellspacing="0" cellpadding="0" style="display: inline-table;">
+                                    <tr align="center">
+                                        <td id="td1">弱</td>
+                                        <td id="td2">中</td>
+                                        <td id="td3">强</td>
+                                    </tr>
+                                </table>
+                             
+                                
+                            </div>
+                            <input type="button" value="成为导游" id="btnGuide" />
+                            <span id="spanGuide" style="display:none">您已是导游 &nbsp;&nbsp;&nbsp;&nbsp;  <input type="button" id="btn_yuyue" value="可预约" /></span>
+                            @*<img src="~/images/fgrpic1.png" align="absmiddle">*@
+                            @*<img src="~/images/ficon1.png">&nbsp;&nbsp;<img src="~/images/ficon2.png">&nbsp;&nbsp; 验证手机和邮箱可分别获得&nbsp;&nbsp;<a href="#">安全设置</a></p>*@
+                            @*<p class="fp2">现金账户：<span class="fspan2">￥200</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;抵用劵：<span class="fspan2">￥0</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;旅游劵：<span class="fspan2">￥0</span>   </p>*@
+                        </div>
+                        <br style="clear:both">
+                    </div>
+                    <div class="forder">
+                        <div class="for_top">
+                            <div class="for_t4">订单编号</div>
+                            <div class="for_t2">产品信息</div>
+                            <div class="for_t3">订单金额</div>
+                            <div class="for_t3">订单状态</div>
+                            <div class="for_t3">操作</div>
+                            <br style="clear:both">
+                        </div>
+                        @foreach (var item in Model.orders)
+                        {
+                            <div class="for_m">
+                                <div class="for_t4">
+                                    订 单 号：@item.OrderNum <br>
+                                    预定时间：@item.CreateDateTime<br>
+                                    出游时间：@item.StartDate
+                                </div>
+                                <div class="for_t2">
+                                    <img src="~/images/forpic1.png" align="absmiddle">&nbsp;<span class="fspan3">@item.Name</span>
+                                </div>
+                                <div class="for_t3">@item.Money</div>
+                                @if (item.state == 0)
+                                {
+                                    <div class="for_t3">代付款</div>
+                                }
+                                else
+                                {
+                                    <div class="for_t3">已付款</div>
+                                }
+
+                                <div class="for_t3"><a href="#" class="a1">查看</a></div>
+                                <br style="clear:both">
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterScript
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            var level = $("#level").val();
+            switch (level) {
+                case "1": {
+                    document.getElementById("td1").style.backgroundColor = "coral";
+                    document.getElementById("td2").style.backgroundColor = null;
+                    document.getElementById("td3").style.backgroundColor = null;
+                    break;
+                }
+                case "2": {
+                    document.getElementById("td1").style.backgroundColor = "lightgreen";
+                    document.getElementById("td2").style.backgroundColor = "lightgreen";
+                    document.getElementById("td3").style.backgroundColor = null;
+                    break;
+                }
+                case "3": {
+                    document.getElementById("td1").style.backgroundColor = "green";
+                    document.getElementById("td2").style.backgroundColor = "green";
+                    document.getElementById("td3").style.backgroundColor = "green";
+                    break;
+                }
+            }
+            if ('@ViewBag.IsGuide'=="True")
+            {
+                $("#btnGuide").attr("style", "display:none");
+                $("#spanGuide").attr("style", "");
+            }
+
+            $("#btnGuide").on("click", function () {
+                location.href = "/Guide/RegisterGuide";
+            })
+        }
+
+    </script>
+
+
+  
+}
+
+

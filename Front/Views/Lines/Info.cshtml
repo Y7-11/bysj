@@ -1,0 +1,115 @@
+﻿@model ViewModel.LInfo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "旅游路线详情";
+
+}
+<style type="text/css">
+    .clumn_r .current {
+        width: 1400px;
+        margin: auto;
+    }
+</style>
+<div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Lines/Index">旅游路线</a> >> <a href="#">旅游路线详情</a> </div>
+<div class="clumn_w clearfix">
+    <div class="clumn_r">
+        <div class="tc_tit">@Model.Lines.title</div>
+        <div class="xq_wrap clearfix">
+            <div class="xq_left"><img src="~/images/big_img01.jpg"></div>
+            <div class="xq_right">
+                <div class="xq_detail">
+                    <p>
+                        地点：
+                        @foreach (var item in Model.LineInfo)
+                        {
+                            @item.Address
+                        }
+                    </p>
+                    <p>旅游价格：￥@Model.Lines.NowPrice</p>
+                    <p>出团日期∶@Model.Lines.CreateDateTime:</p>
+                    <p>周六/周一 持续时间：@Model.LineInfo.Count() 天</p>
+                </div>
+                <div class="xq_button"><a href="javascript:void(0);" id="yuyue"><img src="~/images/order_button.jpg"></a> </div>
+            </div>
+        </div>
+
+        <div class="xq_wrap">
+            <div class="tab_menu xq_menu">
+                <ul class="xq_ul">
+                    <li class="selected">产品介绍</li>            
+                </ul>
+            </div>
+            <div class="tab_box">
+                <div class="tab_w">
+                    @foreach (var item in Model.LineInfo)
+                    { 
+                        <div class="jd_clum">
+                        <div class="jd_tit">第 @item.tag 天 @item.Address </div>
+                        <div class="jd_t">景点介绍：@item.ScenicSpot</div>
+                        <div class="jd_con">
+                            <p>@item.SpotInfo</p>
+                        </div>
+   
+                        <div class="jd_t">酒店信息：</div>
+                        <div class="jd_con">
+                            <p>房型：@item.Apartment </p>
+                            <p>等级：@item.Level </p>
+                            <p>基本设施：@item.Facilities</p>
+                        </div>
+                            <div class="jd_con01">
+                                <p><b>注意事项：</b></p>
+                                <p>@item.attention</p><br>
+                                <p><span>结束愉快行程，返回杭州。</span></p>
+                                <p><span>* 以上行程仅供参考，最终行程可能会根据实际情况进行微调，敬请以出团通知为准。</span></p>
+                            </div>
+                    </div>
+
+                    }
+                </div>
+                <div class="hide tab_w">dhgjfd</div>
+                <div class="hide tab_w">dhgjfd</div>
+                <div class="hide tab_w">dhgjfd</div>
+            </div>
+        </div>
+    </div>
+</div>
+@section FooterScript
+{
+    <script type="text/javascript">
+
+        $(function () {
+            var wweya_li = $("div.tab_menu ul li");
+            wweya_li.click(function () {
+                $(this).addClass("selected")
+                    .siblings().removeClass("selected");
+                var index = wweya_li.index(this);
+                $("div.tab_box > div")
+                    .eq(index).show(100)
+                    .siblings().hide();
+            }).hover(function () {
+                $(this).addClass("hover");
+            }, function () {
+                $(this).removeClass("hover");
+            });
+
+                $("#yuyue").click(function () {
+                    $.ajax({
+                        url: "/Lines/Btn_Yuyue/@Model.Lines.Id",
+                        dataType: "json",
+                        type: "post",
+                        success: function (res) {
+                            if (res.status == "success") {
+                                alert("预约成功");
+                            } else {
+                                alert(res.errorMsg);
+                            }
+                        },
+                        error: function (res) {
+                            alert("报错");
+                        }
+                    });
+                });
+            
+        });
+    </script>
+}

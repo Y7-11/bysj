@@ -1,0 +1,68 @@
+﻿@model ViewModel.LinesAndUser
+@{
+    ViewBag.Title = "我的路线";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="b_wrap">
+    <div class="current"><span>当前所在地：</span><a href="~/Main/Index">首页</a> >> <a href="~/Main/Center">会员中心</a> >> <a href="#">预定与路线</a></div>
+    <div class="fmember">
+        <div class="fmr1">
+            <div class="fmr1_top">我的路线<a href="~/Lines/AddLines?gid=@(ViewBag.gid)"><span style="font-size:15px;float:right;margin-right:20px;margin-top:2px;">添加路线>></span></a></div>
+            <div class="fmr1_m">
+                <div class="forder">
+                    @foreach (var item in Model.Line)
+            {
+                        <div class="js_con clearfix">
+                            <div class="js_l">
+                                <a href="~/Lines/info/@item.Id">
+                                    <img src="~/images/l_img01.jpg">
+                                </a>
+                            </div>
+                            <div class="js_c">
+                                <p><b>  <a href="~/Lines/info/@item.Id"> @item.title </a></b></p>
+                                <p style="height:auto;width:800px">@item.intro</p>
+                                <p><a class="js_pl" href="#"><span>@item.NumOfComment</span>条评论</a> <a class="js_gm" href="#"><span>@item.NumOfPeople</span>人购买</a></p>
+                            </div>
+                            <div class="js_r">
+                                <p><span class="fn_o">￥</span><b>@item.NowPrice</b>起</p>
+                                <p class="y_price">￥@item.PastPrice <span>@item.discount 折</span></p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fmember">
+        <div class="fmr1">
+            <div class="fmr1_top">我的预定</div>
+            <div class="fmr1_m">
+                <div class="forder">
+                    @foreach (var item in Model.User)
+                    {
+                        <div style="font-size:18px;color:red;margin-bottom:8px;">@item.NickName（电话：@item.PhoneNum，邮箱：@item.Email）预约了您，请尽快与他联系哦！</div>
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*@section FooterScript
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#addlines").click(function () {
+                location.href = "/Main/Index";
+            })
+        })
+    </script>
+}*@
+
+
